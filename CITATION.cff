@@ -1,0 +1,24 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Unilateral WiFi CSI as a NIST-Validated Entropy Source: From Bilateral Key Agreement to Single-Device Randomness"
+authors:
+  - family-names: Houshmand
+    given-names: Daniel Mo
+    affiliation: QDaria Quantum Research, Oslo, Norway
+    orcid: https://orcid.org/0009-0008-2270-5454
+    email: mo@qdaria.com
+type: article
+version: 1.0.2
+date-released: 2026-04-15
+doi: 10.5281/zenodo.19437012
+url: https://github.com/QDaria/unilateral-csi-entropy
+repository-code: https://github.com/QDaria/unilateral-csi-entropy
+license: Apache-2.0
+keywords:
+  - WiFi CSI
+  - entropy source
+  - NIST SP 800-90B
+  - unilateral randomness
+  - physical unclonable environment key
+  - post-quantum cryptography
+  - IoT security
