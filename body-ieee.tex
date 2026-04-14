@@ -659,7 +659,7 @@ Physical source & Quantum (Born rule) & EM scattering & CSPRNG \\
 
 \paragraph{Cost per MB.}
 IBM Quantum's free tier provides approximately 6~MB of raw entropy per month (10 minutes of job execution, with significant queuing overhead).
-Beyond the free tier, pricing is \$1.60 per second of quantum processing time.
+Beyond the free tier, pay-as-you-go pricing is approximately \$1.60 per second of quantum processing time as of 2026-Q1.\footnote{IBM Quantum pricing, \url{https://www.ibm.com/quantum/pricing}. Rates are subject to change; figures cited here reflect IBM's published pay-as-you-go rate at the time of writing.}
 At an effective throughput of $\sim$10~KB/s (accounting for circuit transpilation, queue wait, and result download), 1~MB costs approximately \$1.70 of quantum time.
 
 An ESP32-S3 module costs \$5 and requires no ongoing fees.
@@ -746,7 +746,7 @@ We recommend two mitigations:
 Even in fully static conditions, Johnson-Nyquist thermal noise ($P_N = k_B T B \approx -101$~dBm at 300~K, 20~MHz) provides a residual entropy floor of $\sim$1--2~bpb, yielding 0.5--2~MB/month per node at reduced rates.
 \end{enumerate}
 
-An entropy system that honestly pauses during low-quality conditions is strictly preferable to one that silently outputs low-entropy bytes; the variance monitor is a feature, not a limitation.
+An entropy system that pauses during low-quality conditions is strictly preferable to one that silently outputs low-entropy bytes; the variance monitor is a feature, not a limitation.
 
 Figure~\ref{fig:static-degradation} illustrates this degradation pattern and the variance monitoring response.
 
@@ -771,10 +771,10 @@ CSI entropy is designed as one layer in a defense-in-depth entropy architecture,
 The idea of extracting shared secrets from wireless channel measurements dates to Hershey, Hassan, and Yarlagadda (1995) and was formalized for practical systems by Mathur~\etal~\cite{mathur2008radio}, who demonstrated ``radio-telepathy'' between two IEEE~802.11 devices.
 Jana~\etal~\cite{jana2009effectiveness} provided the first large-scale evaluation, showing that environmental dynamics (primarily human movement) are necessary for practical key generation rates.
 Liu~\etal~\cite{liu2012exploiting} extended the approach to fine-grained CSI (beyond RSS) for authentication.
-Zhang~\etal~\cite{zhang2016csikey} provided a comprehensive survey of the field, identifying quantization, reconciliation, and privacy amplification as the three standard phases.
-Ruotsalainen~\etal~\cite{ruotsalainen2023shake} and Avrahami~\etal~\cite{avrahami2023csi} demonstrated CSI-based key agreement on modern commodity hardware.
+Zhang~\etal~\cite{zhang2016csikey} provided a survey of the field, identifying quantization, reconciliation, and privacy amplification as the three standard phases.
+Avrahami~\etal~\cite{avrahami2023csi} demonstrated CSI-based key agreement on modern commodity hardware.
 
-Xiao~\etal~\cite{xiao2024securing} provide a comprehensive 2024 survey of physical-layer key generation; every system surveyed operates in the bilateral mode, and none apply NIST SP~800-90B entropy assessment.
+Xiao~\etal~\cite{xiao2024securing} provide a 2024 survey of physical-layer key generation; every system surveyed operates in the bilateral mode, and none apply NIST SP~800-90B entropy assessment.
 Du~\etal~\cite{du2024keycome} recently proposed KeyCome, a bilateral CSI key generation scheme with obfuscation matrix encapsulation for non-reciprocal channels.
 All of these works operate in the bilateral setting: two cooperating endpoints exploit channel reciprocity.
 Our work is the first to formalize, implement, and evaluate the unilateral paradigm.
@@ -791,14 +791,14 @@ This distinction is not merely semantic; it enables location-locked cryptography
 \label{subsec:related-trng}
 
 Wallace~\etal~\cite{wallace2016sensortrng} proposed using accelerometers, gyroscopes, and magnetometers in mobile devices as entropy sources.
-Marghescu~\etal~\cite{marghescu2019fmtrng} demonstrated FM radio signals as a TRNG for mobile devices.
+Lee and Lee~\cite{lee2019fmtrng} demonstrated FM radio signals as a TRNG for mobile devices.
 These approaches share our philosophy of exploiting ambient physical phenomena for entropy but operate on different physical modalities.
 WiFi CSI has the advantage of ubiquity: every WiFi-capable device already has the necessary hardware.
 
 \subsection{Quantum Random Number Generation}
 \label{subsec:related-qrng}
 
-Ma~\etal~\cite{ma2016qrng} and Herrero-Collantes and Garcia-Escartin~\cite{herrero2017qrng} provide comprehensive reviews of QRNG.
+Ma~\etal~\cite{ma2016qrng} and Herrero-Collantes and Garcia-Escartin~\cite{herrero2017qrng} provide reviews of QRNG.
 QRNG offers information-theoretically secure randomness derived from quantum measurements (the Born rule), which is strictly stronger than any classical source.
 Our work does not compete with QRNG on security guarantees; rather, we provide a practical alternative when quantum hardware is unavailable or cost-prohibitive, and demonstrate that the two sources compose well via XOR fusion.
 
@@ -920,23 +920,6 @@ The complete pipeline (Python extraction, Rust implementation with 118~tests, po
 WiFi CSI is the most widely deployed sensor modality in the world.
 Every access point, every laptop, every smartphone, and every IoT device with WiFi already has the hardware to extract environmental entropy.
 The unilateral paradigm we introduce here transforms this ubiquitous infrastructure from a bilateral key agreement tool into a universal, zero-cost, physics-backed entropy source.
-
-\section*{Data Availability}
-The CSI capture data is from the public Gi-z/CSI-Data corpus~\cite{gringoli2019csidata}, available at \url{https://github.com/Gi-z/CSI-Data}.
-The extraction pipeline, Von~Neumann debiaser, pool architecture, PUEK enrollment code, and XOR compositor are open-source components of the \zipminator project, available at \url{https://github.com/QDaria/zipminator}.
-IBM Quantum entropy was collected from ibm\_kingston (156~qubits) via the IBM Quantum open plan.
-
-\section*{Ethics}
-This work involves passive reception of ambient WiFi frames.
-No human subjects were involved; the Gi-z/CSI-Data corpus was collected by its original authors under their own institutional protocols.
-No personally identifiable information is extracted or processed.
-IRB review was not required.
-
-\section*{Reproducibility}
-All source code for the extraction pipeline (Python and Rust), NIST SP~800-90B assessment scripts, PUEK enrollment and verification, and the XOR compositor are available in the open-source repository.
-The specific CSI capture file (\texttt{walk\_1597159475.pcap}) is identified by filename in the Gi-z/CSI-Data corpus.
-The Rust implementation includes 118~tests; the Python CSI pool provider includes 11~tests.
-
 
 \section*{Data Availability}
 The CSI capture data is from the public Gi-z/CSI-Data corpus~\cite{gringoli2019csidata}, available at \url{https://github.com/Gi-z/CSI-Data}.
